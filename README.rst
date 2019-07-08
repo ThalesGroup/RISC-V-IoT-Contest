@@ -18,7 +18,7 @@ The only software modifications authorised are on the compiler and the zephyr co
 Microchip Creative Board
 ------------------------
 
-The contests' entries will be tested on the Microsemi `Creative Board`_ . Licenses for this board are free and can be retrieve from the `Microsemi Licensing`_ webpage.
+The contests' entries will be tested on the Microchip `Creative Board`_ . Licenses for this board are free and can be retrieve from the `Microchip Licensing`_ webpage.
 
 Zephyr RTOS
 -----------
@@ -84,4 +84,4 @@ or with the cmake and make tools::
 .. _Future Electronics Design Center github repository: https://github.com/Future-Electronics-Design-Center/Creative-Eval-Board
 .. _HiFive Unleashed: https://www.crowdsupply.com/sifive/hifive-unleashed
 .. _HiFive Unleashed Expansion Board: https://www.crowdsupply.com/microsemi/hifive-unleashed-expansion-board
-.. _Microsemi Licensing: https://www.microsemi.com/product-directory/design-resources/1711-licensing
+.. _Microchip Licensing: https://www.microsemi.com/product-directory/design-resources/1711-licensing
