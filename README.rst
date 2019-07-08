@@ -48,9 +48,7 @@ Zephyr RTOS
 
 Our FPGA design requires some modifications from the igloo2 board configuration already present in the Zephyr baseline. You first nee to apply the zephyr modification with ::
 
-    cp file.patch <your zephyrproject location>/zephyr
-    cd <your zephyrproject location>/zephyr
-    git apply file.patch
+    patch <your zephyrproject location>/zephyr/soc/riscv32/riscv-privilege/miv/dts_fixup.h file.patch
 
 before launching the ripe build.::
 
