@@ -39,13 +39,15 @@ Scores will be attributed as follows:
 
 - 40% for the prevention of the five attacks from the zephyr RIPE attacks
 - 15% for the FPGA utilization on the IGLOO2
-- 15% on the max frequency if the CPU
+- 15% on the max frequency of the CPU
 - 15% on the power consumption
 - 15% for not changing the compiler
 
-First place prize : 5000€ + `HiFive Unleashed`_ + `HiFive Unleashed Expansion Board`_
-Second place prize : 2000€ + `HiFive Unleashed`_
-Third place prize : 1000€ + `HiFive Unleashed`_
+Prizes will be attributed as follows:
+
+* First place prize : 5000€ + `HiFive Unleashed`_ + `HiFive Unleashed Expansion Board`_
+* Second place prize : 2000€ + `HiFive Unleashed`_
+* Third place prize : 1000€ + `HiFive Unleashed`_
 
 Setting up the Demonstration
 ****************************
