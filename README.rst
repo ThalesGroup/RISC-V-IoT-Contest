@@ -12,7 +12,7 @@ Rules of the Hackathon
 **********************
 
 The Security Hackathon objective is to propose hardware security counter measures to thwart classical software attacks. 
-Entries should be composed of a RISC-V RV32IMC soft cpu in Verilog that can run the proposed attack software. 
+Entries should be composed of a RISC-V RV32IMC soft cpu compatible of Verilog flows that can run the proposed attack software. 
 The only software modifications authorised are on the compiler and the zephyr configuration.
 
 Microchip Creative Board
@@ -24,7 +24,9 @@ Zephyr RTOS
 -----------
 
 We are using the 1.14 version of zephyr for this hackathon. You can download and set it up through the github link or directly with the west tool.
-We advise using `Zephyr Getting Started`_.
+We advise using `Zephyr Getting Started`_. and retrieving the version below with west::
+
+     west init zephyrproject --mr v1.14.1-rc1
 
 Attack Software
 ---------------
@@ -62,7 +64,7 @@ For the demonstration We used the FPGA design from the IGL2_MiV_FreeRTOS_Demo of
 Zephyr RTOS
 -----------
 
-Our FPGA design requires some modifications from the IGLOO2 board configuration already present in the Zephyr baseline. You first need to apply the zephyr modification with::
+This FPGA design from Future Electronics requires some modifications from the IGLOO2 board configuration already present in the Zephyr baseline. You first need to apply the zephyr modification with::
 
     patch <your zephyrproject location>/zephyr/soc/riscv32/riscv-privilege/miv/dts_fixup.h file.patch
 
@@ -78,6 +80,95 @@ or with the cmake and make tools::
     cmake -DBOARD=m2gl025_miv ripe
     make
 
+Running the code 
+----------------
+The Zephyr ELF can be loaded on the target using the Microsemi provided OpenOCD. OpenOCD is part of the SoftConsole.
+SoftConsole 6.0 is available on the `Softconsole Download`_
+
+Once installed and your board connected to your development system, you can start OpenOCD::
+
+    /usr/local/Microsemi_SoftConsole_v6.0/eclipse//../openocd/bin/openocd --file board/microsemi-riscv.cfg
+
+Attached your debugger and load the executable, erase the FreeRTOS default demo, and run the executable ::
+
+        thales@Linux:~/devel/hackhathon/RISC-V-IoT-Hackathon/ripe$ /home/thales/devel/hackhathon/toolchain/riscv32-zephyr-elf/bin/riscv32-zephyr-elf-gdb build/zephyr/zephyr.elf 
+        GNU gdb (crosstool-NG 1.24.0-rc2-dirty) 8.2.1
+        Copyright (C) 2018 Free Software Foundation, Inc.
+        License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+        This is free software: you are free to change and redistribute it.
+        There is NO WARRANTY, to the extent permitted by law.
+        Type "show copying" and "show warranty" for details.
+        This GDB was configured as "--host=x86_64-build_pc-linux-gnu --target=riscv32-zephyr-elf".
+        Type "show configuration" for configuration details.
+        For bug reporting instructions, please see:
+        <http://www.gnu.org/software/gdb/bugs/>.
+        Find the GDB manual and other documentation resources online at:
+        <http://www.gnu.org/software/gdb/documentation/>.
+        
+        For help, type "help".
+        Type "apropos word" to search for commands related to "word"...
+        Reading symbols from build/zephyr/zephyr.elf...done.
+        (gdb) target remote localhost:3333
+        Remote debugging using localhost:3333
+        warning: Target-supplied registers are not supported by the current architecture
+        0x60002798 in ?? ()
+        (gdb) load
+        Loading section vector, size 0x10 lma 0x80000000
+        Loading section exceptions, size 0x268 lma 0x80000010
+        Loading section text, size 0x6290 lma 0x80000278
+        Loading section sw_isr_table, size 0x150 lma 0x80006508
+        Loading section devconfig, size 0x3c lma 0x80006658
+                Loading section rodata, size 0x1344 lma 0x80006694
+        Loading section datas, size 0x84c lma 0x800079d8
+        Loading section initlevel, size 0x3c lma 0x80008224
+        Loading section _k_mutex_area, size 0x14 lma 0x80008260
+        Start address 0x80000000, load size 33396
+        Transfer rate: 7 KB/sec, 3339 bytes/write.
+        (gdb) c
+        Continuing.
+
+        Program received signal SIGTRAP, Trace/breakpoint trap.
+        0x60000658 in ?? ()
+        (gdb) load
+        Loading section vector, size 0x10 lma 0x80000000
+        Loading section exceptions, size 0x268 lma 0x80000010
+        Loading section text, size 0x6290 lma 0x80000278
+        Loading section sw_isr_table, size 0x150 lma 0x80006508
+        Loading section devconfig, size 0x3c lma 0x80006658
+        Loading section rodata, size 0x1344 lma 0x80006694
+        Loading section datas, size 0x84c lma 0x800079d8
+        Loading section initlevel, size 0x3c lma 0x80008224
+        Loading section _k_mutex_area, size 0x14 lma 0x80008260
+        Start address 0x80000000, load size 33396
+        Transfer rate: 7 KB/sec, 3339 bytes/write.
+        (gdb) c
+        Continuing.
+
+On the UART console, the result of the attack is displayed (Here for the attack #2) ::
+        ***** Booting Zephyr OS v1.14.1-rc1 *****
+        [z_sched_lock]  scheduler locked (0x80040cf8:255)
+        [k_sched_unlock]  scheduler unlocked (0x80040cf8:0)
+        RIPE is alive! m2gl025_miv
+        -t direct -i shellcode -c longjmpstackparam -l stack -f homebrew----------------
+        Shellcode instructions:
+        lui t1,  0x80002               80002337
+        addi t1, t1, 0x30c                 30c30313
+        jalr t1000300e7
+        ----------------
+        target_addr == 0x80041ae0
+        buffer == 0x800416b0
+        payload size == 1077
+        bytes to pad: 1060
+
+        overflow_ptr: 0x800416b0
+        payload: 7#
+
+        Executing attack... success.
+        Code injection function reached.
+        exit
+
+
+
 
 .. _Zephyr Getting Started: https://docs.zephyrproject.org/latest/getting_started/index.html
 .. _Creative Board: https://www.futureelectronics.com/fr/p/development-tools--development-tool-hardware/futurem2gl-evb-future-electronics-dev-tools-7091559
@@ -87,3 +178,4 @@ or with the cmake and make tools::
 .. _HiFive Unleashed: https://www.crowdsupply.com/sifive/hifive-unleashed
 .. _HiFive Unleashed Expansion Board: https://www.crowdsupply.com/microsemi/hifive-unleashed-expansion-board
 .. _Microchip Licensing: https://www.microsemi.com/product-directory/design-resources/1711-licensing
+.. _Softconsole Download: https://www.microsemi.com/product-directory/design-tools/4879-softconsole#downloads

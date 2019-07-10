@@ -43,10 +43,6 @@
 
 #include <zephyr.h>
 #include <misc/printk.h>
-typedef unsigned int uint32_t;
-typedef unsigned short uint16_t;
-typedef unsigned char uint8_t;
-typedef unsigned long int   uintptr_t;
 
 #include "ripe_attack_parameters.h"
 #define fprintf(dest,str...) printk(str)

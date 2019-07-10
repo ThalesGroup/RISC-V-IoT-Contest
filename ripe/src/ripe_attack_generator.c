@@ -83,56 +83,6 @@ lj_func(jmp_buf lj_buf);
 
 static ATTACK_FORM attack;
 
-#if 0
-int
-main_internal(int argc, char ** argv)
-{
-    int option_char;
-    jmp_buf stack_jmp_buffer_param;
-
-    // parse command line input
-    while ((option_char = getopt(argc, argv, "t:i:c:l:f:d")) != -1) {
-        switch (option_char) {
-            case 't':
-                set_technique(optarg);
-                break;
-            case 'i':
-                set_inject_param(optarg);
-                break;
-            case 'c':
-                set_code_ptr(optarg);
-                break;
-            case 'l':
-                set_location(optarg);
-                break;
-            case 'f':
-                set_function(optarg);
-                break;
-            case 'd':
-                output_debug_info = TRUE;
-                fprintf(stderr, "debug info enabled\n");
-                break;
-            default:
-                fprintf(stderr, "Error: Unknown command option \"%s\"\n",
-                  optarg);
-                exit(1);
-                break;
-        }
-    }
-
-    // Check if attack is possible
-    if (is_attack_possible()) {
-        perform_attack(&dummy_function, stack_jmp_buffer_param);
-    } else {
-        exit(ATTACK_IMPOSSIBLE);
-    }
-
-    printf("Back in main\n");
-
-    return 0;
-} /* main */
-#endif
-
 void
 try_attack(void)
 {
@@ -147,17 +97,20 @@ try_attack(void)
 
 }
 
-// ASA
+//
+// Initial main taking argument on the commande line has been replaced by a simple function call
+// You have to update the ATTACK_NR to mimic the command line arguments
+//
 void
 main(void)
 {
-#define ATTACK_NR   4
+#define ATTACK_NR   2
 
     printk("RIPE is alive! %s\n", CONFIG_BOARD);
 
 #if ATTACK_NR == 1
 	printk("-t direct -i shellcode -c funcptrheap -l heap -f memcpy");
-    attack.technique = DIRECT; attack.inject_param = INJECTED_CODE_NO_NOP; attack.code_ptr= FUNC_PTR_HEAP; attack.location = HEAP;  attack.function = MEMCPY;
+    attack.technique = DIRECT; attack.inject_param = INJECTED_CODE_NO_NOP; attack.code_ptr= FUNC_PTR_HEAP; attack.location = HEAP;  attack.function = HOMEBREW;
 #endif
 
 #if ATTACK_NR == 2
@@ -167,17 +120,17 @@ main(void)
 
 #if ATTACK_NR == 3
 	printk("-t indirect -i returnintolibc -c ret -l stack -f memcpy");
-    attack.technique = INDIRECT; attack.inject_param = RETURN_INTO_LIBC; attack.code_ptr= RET_ADDR; attack.location = STACK;  attack.function = MEMCPY;
+    attack.technique = INDIRECT; attack.inject_param = RETURN_INTO_LIBC; attack.code_ptr= RET_ADDR; attack.location = STACK;  attack.function = HOMEBREW;
 #endif
 
 #if ATTACK_NR == 4
 	printk("-t indirect -i shellcode -c funcptrstackvar -l stack -f memcpy");
-    attack.technique = INDIRECT; attack.inject_param = RETURN_INTO_LIBC; attack.code_ptr= FUNC_PTR_STACK_VAR; attack.location = STACK;  attack.function = MEMCPY;
+    attack.technique = INDIRECT; attack.inject_param = RETURN_INTO_LIBC; attack.code_ptr= FUNC_PTR_STACK_VAR; attack.location = STACK;  attack.function = HOMEBREW;
 #endif
 
 #if ATTACK_NR == 5
 	printk("-t indirect -i shellcode -c funcptrheap -l heap -f memcpy");
-    attack.technique = INDIRECT; attack.inject_param = INJECTED_CODE_NO_NOP; attack.code_ptr= STRUCT_FUNC_PTR_HEAP; attack.location = HEAP;  attack.function = MEMCPY;
+    attack.technique = INDIRECT; attack.inject_param = INJECTED_CODE_NO_NOP; attack.code_ptr= STRUCT_FUNC_PTR_HEAP; attack.location = HEAP;  attack.function = HOMEBREW;
 #endif
 
     try_attack();
@@ -276,7 +229,6 @@ perform_attack(
 
     /* Check that malloc went fine */
     if (heap_buffer1 == NULL || heap_buffer2 == NULL) {
-        //ASA perror("Unable to allocate heap memory.");
         printk("Unable to allocate heap memory.");
         exit(1);
     }
@@ -730,7 +682,7 @@ perform_attack(
             break;
         case SSCANF:
             snprintf(format_string_buf, 15, "%%%ic", payload.size);
-            // ASA REMOVE FOR NOW sscanf(payload.buffer, format_string_buf, buffer);
+            // Removed for now sscanf(payload.buffer, format_string_buf, buffer);
             break;
         case HOMEBREW:
             homebrew_memcpy(buffer, payload.buffer, payload.size - 1);
@@ -914,7 +866,6 @@ build_payload(CHARPAYLOAD * payload)
     payload->buffer = (char *) malloc(payload->size);
     if (payload->buffer == NULL) {
         if (output_debug_info)
-            // ASAperror("Unable to allocate payload buffer.");
             printk("Unable to allocate payload buffer.");
         return FALSE;
     }
@@ -1041,11 +992,9 @@ data_leak(char *buf) {
 
 	memcpy(msg, buf + 2, size);
 	for (i = 0; i < size; i++) {
-		//ASA if (msg[i] >= 0x20) putc(msg[i],stdout);
 		if (msg[i] >= 0x20) printf("%c",msg[i]);
 	}
 
-	// ASA putc('\n', stdout);
 	printf("\n");
 }			
 
@@ -1143,149 +1092,6 @@ format_instruction(char * dest, size_t insn)
         dest[3 - i] = insn_bytes[i];
     }
 }
-// ASA
-#if 0
-
-void
-set_technique(char * choice)
-{
-    if (strcmp(choice, opt_techniques[0]) == 0) {
-        attack.technique = DIRECT;
-    } else if (strcmp(choice, opt_techniques[1]) == 0) {
-        attack.technique = INDIRECT;
-    } else {
-        if (output_debug_info) {
-            fprintf(stderr, "Error: Unknown choice of technique \"%s\"\n",
-              choice);
-        }
-    }
-    printf("tech: %d\n", attack.technique);
-}
-
-void
-set_inject_param(char * choice)
-{
-    if (strcmp(choice, opt_inject_params[0]) == 0) {
-        attack.inject_param = INJECTED_CODE_NO_NOP;
-    } else if (strcmp(choice, opt_inject_params[1]) == 0) {
-        attack.inject_param = RETURN_INTO_LIBC;
-    } else if (strcmp(choice, opt_inject_params[2]) == 0) {
-        attack.inject_param = RETURN_ORIENTED_PROGRAMMING;
-    } else if (strcmp(choice, opt_inject_params[3]) == 0) {
-        attack.inject_param = DATA_ONLY;
-    } else {
-        if (output_debug_info) {
-            fprintf(stderr,
-              "Error: Unknown choice of injection parameter \"%s\"\n",
-              choice);
-        }
-        exit(1);
-    }
-    printf("attack: %d\n", attack.inject_param);
-}
-
-void
-set_code_ptr(char * choice)
-{
-    if (strcmp(choice, opt_code_ptrs[0]) == 0) {
-        attack.code_ptr = RET_ADDR;
-    } else if (strcmp(choice, opt_code_ptrs[1]) == 0) {
-        attack.code_ptr = FUNC_PTR_STACK_VAR;
-    } else if (strcmp(choice, opt_code_ptrs[2]) == 0) {
-        attack.code_ptr = FUNC_PTR_STACK_PARAM;
-    } else if (strcmp(choice, opt_code_ptrs[3]) == 0) {
-        attack.code_ptr = FUNC_PTR_HEAP;
-    } else if (strcmp(choice, opt_code_ptrs[4]) == 0) {
-        attack.code_ptr = FUNC_PTR_BSS;
-    } else if (strcmp(choice, opt_code_ptrs[5]) == 0) {
-        attack.code_ptr = FUNC_PTR_DATA;
-    } else if (strcmp(choice, opt_code_ptrs[6]) == 0) {
-        attack.code_ptr = LONGJMP_BUF_STACK_VAR;
-    } else if (strcmp(choice, opt_code_ptrs[7]) == 0) {
-        attack.code_ptr = LONGJMP_BUF_STACK_PARAM;
-    } else if (strcmp(choice, opt_code_ptrs[8]) == 0) {
-        attack.code_ptr = LONGJMP_BUF_HEAP;
-    } else if (strcmp(choice, opt_code_ptrs[9]) == 0) {
-        attack.code_ptr = LONGJMP_BUF_BSS;
-    } else if (strcmp(choice, opt_code_ptrs[10]) == 0) {
-        attack.code_ptr = LONGJMP_BUF_DATA;
-    } else if (strcmp(choice, opt_code_ptrs[11]) == 0) {
-        attack.code_ptr = STRUCT_FUNC_PTR_STACK;
-    } else if (strcmp(choice, opt_code_ptrs[12]) == 0) {
-        attack.code_ptr = STRUCT_FUNC_PTR_HEAP;
-    } else if (strcmp(choice, opt_code_ptrs[13]) == 0) {
-        attack.code_ptr = STRUCT_FUNC_PTR_DATA;
-    } else if (strcmp(choice, opt_code_ptrs[14]) == 0) {
-        attack.code_ptr = STRUCT_FUNC_PTR_BSS;
-    } else if (strcmp(choice, opt_code_ptrs[15]) == 0) {
-        attack.code_ptr = VAR_BOF;
-    } else if (strcmp(choice, opt_code_ptrs[16]) == 0) {
-        attack.code_ptr = VAR_IOF;
-    } else if (strcmp(choice, opt_code_ptrs[17]) == 0) {
-        attack.code_ptr = VAR_LEAK;
-    } else {
-        if (output_debug_info) {
-            fprintf(stderr, "Error: Unknown choice of code pointer \"%s\"\n",
-              choice);
-        }
-        exit(1);
-    }
-    printf("code ptr: %d\n", attack.code_ptr);
-} /* set_code_ptr */
-
-void
-set_location(char * choice)
-{
-    if (strcmp(choice, opt_locations[0]) == 0) {
-        attack.location = STACK;
-    } else if (strcmp(choice, opt_locations[1]) == 0) {
-        attack.location = HEAP;
-    } else if (strcmp(choice, opt_locations[2]) == 0) {
-        attack.location = BSS;
-    } else if (strcmp(choice, opt_locations[3]) == 0) {
-        attack.location = DATA;
-    } else {
-        if (output_debug_info) {
-            fprintf(stderr, "Error: Unknown choice of memory location \"%s\"\n",
-              choice);
-        }
-        exit(1);
-    }
-    printf("location: %d\n", attack.location);
-}
-
-void
-set_function(char * choice)
-{
-    if (strcmp(choice, opt_funcs[0]) == 0) {
-        attack.function = MEMCPY;
-    } else if (strcmp(choice, opt_funcs[1]) == 0) {
-        attack.function = STRCPY;
-    } else if (strcmp(choice, opt_funcs[2]) == 0) {
-        attack.function = STRNCPY;
-    } else if (strcmp(choice, opt_funcs[3]) == 0) {
-        attack.function = SPRINTF;
-    } else if (strcmp(choice, opt_funcs[4]) == 0) {
-        attack.function = SNPRINTF;
-    } else if (strcmp(choice, opt_funcs[5]) == 0) {
-        attack.function = STRCAT;
-    } else if (strcmp(choice, opt_funcs[6]) == 0) {
-        attack.function = STRNCAT;
-    } else if (strcmp(choice, opt_funcs[7]) == 0) {
-        attack.function = SSCANF;
-    } else if (strcmp(choice, opt_funcs[8]) == 0) {
-        attack.function = HOMEBREW;
-    } else {
-        if (output_debug_info) {
-            fprintf(stderr,
-              "Error: Unknown choice of vulnerable function \"%s\"\n",
-              choice);
-        }
-        exit(1);
-    }
-    printf("function: %d\n", attack.function);
-}
-#endif 
 
 boolean
 is_attack_possible()
