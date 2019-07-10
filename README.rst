@@ -145,6 +145,7 @@ Attached your debugger and load the executable, erase the FreeRTOS default demo,
         Continuing.
 
 On the UART console, the result of the attack is displayed (Here for the attack #2) ::
+
         ***** Booting Zephyr OS v1.14.1-rc1 *****
         [z_sched_lock]  scheduler locked (0x80040cf8:255)
         [k_sched_unlock]  scheduler unlocked (0x80040cf8:0)
