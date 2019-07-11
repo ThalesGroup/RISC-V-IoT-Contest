@@ -172,7 +172,7 @@ On the UART console, the result of the attack is displayed (Here for the attack 
 
 
 .. _Zephyr Getting Started: https://docs.zephyrproject.org/latest/getting_started/index.html
-.. _Creative Development Board: https://www.futureelectronics.com/fr/p/development-tools--development-tool-hardware/futurem2gl-evb-future-electronics-dev-tools-7091559
+.. _Creative Development Board: https://www.futureelectronics.com/fr/resources/videos/future-electronics-microsemi-creative-development-board
 .. _hope-RIPE: https://github.com/draperlaboratory/hope-RIPE
 .. _RIPE: https://github.com/johnwilander/RIPE
 .. _Future Electronics Design Center github repository: https://github.com/Future-Electronics-Design-Center/Creative-Eval-Board
