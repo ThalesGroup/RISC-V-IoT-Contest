@@ -5,51 +5,50 @@ RISC-V Soft CPU Security Contest by Thales and Microchip Technology
 Thanks
 ******
 
-We would like to thanks Microchip Technology and the RISC-V Foundation for their participation in this contest. 
+We would like to thank Microchip Technology and the RISC-V Foundation for their participation in this contest. 
 Additionally, thanks to John Merrill and John Wilander for their work on the RIPE tool.
 
 You can contact us through the Github or at softcpu-contest@riscv.org 
 
 Problem Overview
 ****************
+
 The boom of the IoT provides, thanks to the massive number of deployed objects, a very efficient attack vector for DDoS.
-These IoT are also increasing the attack surface of the systems located behind (see `Thales Data Threat Report`_).
+These IoT devices are also increasing the attack surface of back-end systems (see `Thales Data Threat Report`_).
 The `top attacks`_ should be addressed by properly managing credentials. 
-But among the other attacks, coding flaws leading to Buffer Overflows, are very significant.  
-Obviously better coding practice should be encouraged but the execution platform should be also improved to mitigate such attacks.
+Especially coding flaws leading to Buffer Overflows are a significant type of attacks that should be prevented.  
+Obviously better coding practices should be encouraged but the execution platform should be also improved to mitigate such attacks.
 
 In this contest, we are proposing to consider some very classical attacks:
 
-* Corrupting function pointer on the heap
+* Corrupting a function pointer on the heap
 * Buffer overflow on the stack to corrupt longjump buffer
 * Buffer overflow on the heap to change the return address
 * Corrupting a function pointer on the stack
-* Corrupting C structure holding a function pointer
+* Corrupting a C structure holding a function pointer
 
-An introduction `Buffer overflow`_,  `Return Oriented Programming`_, and many others scan be easily found on Internet 
+An introduction to `Buffer overflow`_,  `Return Oriented Programming`_, and many others scan be easily found on the Internet. 
 
-The testing code is “`RIPE`_, the Runtime Intrusion Prevention Evaluator”.
+The testing code is "`RIPE`_, the Runtime Intrusion Prevention Evaluator".
 
-Without changing the RIPE testing code, the contestants must develop protection strategies at the RISC-V microprocessor level (only the compiler may be modified to help the microprocessor) . 
-This Cyber-improved RISC-V processor will have to either suppress or mitigate the success of these attacks.
+Without changing the RIPE testing code, the contestants must develop protection strategies at the RISC-V microprocessor level (only the compiler may be modified to help the microprocessor). 
+This cyber-improved RISC-V processor will have to either suppress or mitigate the success of these attacks.
 
 Already existing strategies are heavily documented in the literature, but not so commonly deployed (https://en.wikipedia.org/wiki/Shadow_stack , https://en.wikipedia.org/wiki/Control-flow_integrity , https://www.usenix.org/node/190961 , etc.).
 
 We encourage contestants to develop a cyber-improved version of RISC-V processors, and thus contributing to the Cyber-Security of the IoT.
 
-
-
 Rules of the Contest
 **********************
 
-The Security Contest objective is to propose hardware security counter measures to thwart classical software attacks. 
+The Security Contest's objective is to propose hardware security counter measures to thwart classical software attacks. 
 Entries should be composed of a RISC-V RV32IMC soft CPU compatible with Verilog flows that can run the proposed attack software. 
 The only software modifications authorised are on the compiler and the Zephyr configuration.
 
 Microchip Creative Board
 ------------------------
 
-The contests' entries will be tested on the Microchip `Creative Development Board`_ . Licenses for this board are free and can be retrieved from the `Microchip Licensing`_ webpage.
+The contests' entries will be tested on the Microchip `Creative Development Board`_. Licenses for this board are free and can be retrieved from the `Microchip Licensing`_ webpage.
 
 Zephyr RTOS
 -----------
@@ -113,8 +112,9 @@ or with the cmake and make tools::
 
 Running the code 
 ----------------
-The Zephyr ELF can be loaded on the target using the Microsemi, a subsidiary of Microchip, provided OpenOCD. OpenOCD is part of the SoftConsole.
-SoftConsole 6.0 is available on the `Softconsole Download`_
+
+The Zephyr ELF can be loaded on the target using the Microsemi, a subsidiary of Microchip, provided OpenOCD. OpenOCD is part of the SoftConsole IDE.
+SoftConsole 6.0 is available at the `Softconsole Download`_ page.
 
 Once installed and your board connected to your development system, you can start OpenOCD::
 
@@ -198,8 +198,6 @@ On the UART console, the result of the attack is displayed (Here for the attack 
         Executing attack... success.
         Code injection function reached.
         exit
-
-
 
 
 .. _Zephyr Getting Started: https://docs.zephyrproject.org/latest/getting_started/index.html
