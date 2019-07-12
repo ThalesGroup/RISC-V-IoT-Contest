@@ -20,11 +20,11 @@ Obviously better coding practice should be encouraged but the execution platform
 
 In this contest, we are proposing to consider some very classical attacks:
 
-•	Corrupting function pointer on the heap
-•	Buffer overflow on the stack to corrupt longjump buffer
-•	Buffer overflow on the heap to change the return address
-•	Corrupting a function pointer on the stack
-•	Corrupting C structure holding a function pointer
+* Corrupting function pointer on the heap
+* Buffer overflow on the stack to corrupt longjump buffer
+* Buffer overflow on the heap to change the return address
+* Corrupting a function pointer on the stack
+* Corrupting C structure holding a function pointer
 
 An introduction `Buffer overflow`_,  `Return Oriented Programming`_, and many others scan be easily found on Internet 
 
