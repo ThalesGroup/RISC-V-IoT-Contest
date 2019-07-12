@@ -8,6 +8,34 @@ Thanks
 We would like to thanks Microchip Technology and the RISC-V Foundation for their participation in this contest. 
 Additionally, thanks to John Merrill and John Wilander for their work on the RIPE tool.
 
+Problem Overview
+****************
+The boom of the IoT provides, thanks to the massive number of deployed objects, a very efficient attack vector for DDoS.
+These IoT are also increasing the attack surface of the systems located behind (see `Thales Data Threat Report`_).
+The `top attacks`_ should be addressed by properly managing credentials. 
+But among the other attacks, coding flaws leading to Buffer Overflows, are very significant.  
+Obviously better coding practice should be encouraged but the execution platform should be also improved to mitigate such attacks.
+
+In this contest, we are proposing to consider some very classical attacks:
+•	Corrupting function pointer on the heap
+•	Buffer overflow on the stack to corrupt longjump buffer
+•	Buffer overflow on the heap to change the return address
+•	Corrupting a function pointer on the stack
+•	Corrupting C structure holding a function pointer
+
+An introduction `Buffer overflow`_,  `Return Oriented Programming`_, and many others scan be easily found on Internet 
+
+The testing code is “`RIPE`_, the Runtime Intrusion Prevention Evaluator”.
+
+Without changing the RIPE testing code, the contestants must develop protection strategies at the RISC-V microprocessor level (only the compiler may be modified to help the microprocessor) . 
+This Cyber-improved RISC-V processor will have to either suppress or mitigate the success of these attacks.
+
+Already existing strategies are heavily documented in the literature, but not so commonly deployed (https://en.wikipedia.org/wiki/Shadow_stack , https://en.wikipedia.org/wiki/Control-flow_integrity , https://www.usenix.org/node/190961 , etc.).
+
+We encourage contestants to develop a cyber-improved version of RISC-V processors, and thus contributing to the Cyber-Security of the IoT.
+
+
+
 Rules of the Contest
 **********************
 
@@ -180,3 +208,9 @@ On the UART console, the result of the attack is displayed (Here for the attack 
 .. _HiFive Unleashed Expansion Board: https://www.crowdsupply.com/microsemi/hifive-unleashed-expansion-board
 .. _Microchip Licensing: https://www.microsemi.com/product-directory/design-resources/1711-licensing
 .. _Softconsole Download: https://www.microsemi.com/product-directory/design-tools/4879-softconsole#downloads
+.. _Thales Data Threat Report: https://www.thalesesecurity.com/2019/data-threat-report
+.. _top attacks: https://securelist.com/new-trends-in-the-world-of-iot-threats/87991/
+.. _Buffer overflow: https://www.owasp.org/index.php/Buffer_overflow_attack
+.. _Return Oriented Programming: https://en.wikipedia.org/wiki/Return-oriented_programming
+.. _RIPE: https://github.com/johnwilander/RIPE
+
