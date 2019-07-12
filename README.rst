@@ -8,6 +8,8 @@ Thanks
 We would like to thanks Microchip Technology and the RISC-V Foundation for their participation in this contest. 
 Additionally, thanks to John Merrill and John Wilander for their work on the RIPE tool.
 
+You can contact us through the Github or at softcpu-contest@riscv.org 
+
 Problem Overview
 ****************
 The boom of the IoT provides, thanks to the massive number of deployed objects, a very efficient attack vector for DDoS.
