@@ -23,7 +23,7 @@ In this contest, we are proposing to consider some very classical attacks:
 
 * Corrupting a function pointer on the heap
 * Buffer overflow on the stack to corrupt longjump buffer
-* Buffer overflow on the heap to change the return address
+* Buffer overflow on the stack to change the return address
 * Corrupting a function pointer on the stack
 * Corrupting a C structure holding a function pointer
 
