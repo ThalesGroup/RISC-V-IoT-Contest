@@ -42,7 +42,7 @@ Rules of the Contest
 **********************
 
 The Security Contest's objective is to propose hardware security counter measures to thwart classical software attacks. 
-Entries should be composed of a RISC-V RV32IMC soft CPU compatible with Verilog flows that can run the proposed attack software. 
+Entries should be composed of a RISC-V RV32IMC soft CPU and all libero files necessary to reproduce the bitstream (e.g. project, HDL source files, constraints, etc.) that can run the proposed attack software. 
 The only software modifications authorised are on the compiler and the Zephyr configuration.
 
 Microchip Creative Board
