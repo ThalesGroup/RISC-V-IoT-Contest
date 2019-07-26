@@ -34,7 +34,7 @@ The testing code is "`RIPE`_, the Runtime Intrusion Prevention Evaluator".
 Without changing the RIPE testing code, the contestants must develop protection strategies at the RISC-V microprocessor level (only the compiler may be modified to help the microprocessor). 
 This cyber-improved RISC-V processor will have to either suppress or mitigate the success of these attacks.
 
-Already existing strategies are heavily documented in the literature, but not so commonly deployed (https://en.wikipedia.org/wiki/Shadow_stack , https://en.wikipedia.org/wiki/Control-flow_integrity , https://www.usenix.org/node/190961 , etc.).
+Already existing strategies are heavily documented in the literature, but not so commonly deployed (`Shadow Stack`_, `Control flow integrity`_, `Control-Flow Bending`_, etc.).
 
 We encourage contestants to develop a cyber-improved version of RISC-V processors, and thus contributing to the Cyber-Security of the IoT.
 
@@ -199,6 +199,10 @@ On the UART console, the result of the attack is displayed (Here for the attack 
         Code injection function reached.
         exit
 
+Discussion forum
+****************
+
+For any discussion about security strategies or implementation details you can use the `Discussion forum`_.
 
 .. _Zephyr Getting Started: https://docs.zephyrproject.org/latest/getting_started/index.html
 .. _Creative Development Board: https://www.futureelectronics.com/fr/resources/videos/future-electronics-microsemi-creative-development-board
@@ -213,5 +217,7 @@ On the UART console, the result of the attack is displayed (Here for the attack 
 .. _top attacks: https://securelist.com/new-trends-in-the-world-of-iot-threats/87991/
 .. _Buffer overflow: https://www.owasp.org/index.php/Buffer_overflow_attack
 .. _Return Oriented Programming: https://en.wikipedia.org/wiki/Return-oriented_programming
-.. _RIPE: https://github.com/johnwilander/RIPE
-
+.. _Discussion forum: https://groups.google.com/a/riscv.org/forum/#!forum/softcpu-discuss
+.. _Shadow Stack: https://en.wikipedia.org/wiki/Shadow_stack
+.. _Control flow integrity: https://en.wikipedia.org/wiki/Control-flow_integrity
+.. _Control-Flow Bending: https://www.usenix.org/node/190961
