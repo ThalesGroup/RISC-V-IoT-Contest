@@ -124,7 +124,7 @@ main(void)
 #endif
 
 #if ATTACK_NR == 4
-	printk("-t indirect -i shellcode -c funcptrstackvar -l stack -f memcpy");
+	printk("-t indirect -i returnintolibc -c funcptrstackvar -l stack -f memcpy");
     attack.technique = INDIRECT; attack.inject_param = RETURN_INTO_LIBC; attack.code_ptr= FUNC_PTR_STACK_VAR; attack.location = STACK;  attack.function = HOMEBREW;
 #endif
 
